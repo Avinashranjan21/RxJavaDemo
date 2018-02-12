@@ -1,4 +1,4 @@
-package com.devschool.part_two;
+package com.devschool.chapter01;
 
 import io.reactivex.Observable;
 
