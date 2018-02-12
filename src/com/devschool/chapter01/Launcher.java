@@ -1,5 +1,6 @@
 package com.devschool.chapter01;
 
+import com.devschool.Utility;
 import io.reactivex.Observable;
 
 import java.util.concurrent.TimeUnit;
@@ -21,16 +22,8 @@ public class Launcher {
         secondIntervals.subscribe(System.out::println);
         // Hold main thread for 5 seconds so observable above has chance to fire
 
-        sleep(5000);
+       Utility.sleep(5000);
 
 
-    }
-
-    private static void sleep(long millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 }
