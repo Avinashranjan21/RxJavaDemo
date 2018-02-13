@@ -4,6 +4,7 @@ import com.devschool.Utility;
 import io.reactivex.Observable;
 import io.reactivex.observables.ConnectableObservable;
 
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 public class ObservableType {
@@ -14,6 +15,9 @@ public class ObservableType {
 //        intervalObservable();
 //        intervalWith2Subscriber();
 //        connectableWith2Subscriber();
+        emptyObservable();
+        neverObservable();
+        errorObservable();
 
 
     }
@@ -41,13 +45,13 @@ public class ObservableType {
         //        Now testing with two subscriber and using two sleep method on Main thread
 
         Observable<Long> seconds = Observable.interval(1, TimeUnit.SECONDS);
-//Observer 1
+        //Observer 1
         seconds.subscribe(l -> System.out.println("Observer 1: " + l));
-//sleep 5 seconds
+        //sleep 5 seconds
         Utility.sleep(5000);
-//Observer 2
+        //Observer 2
         seconds.subscribe(l -> System.out.println("Observer 2: " + l));
-//sleep 5 seconds
+        //sleep 5 seconds
         Utility.sleep(5000);
     }
 
@@ -68,6 +72,38 @@ public class ObservableType {
          * @Param2 count is total count of emission
          * */
         Observable.range(1, 10).subscribe(s -> System.out.println("Avinash Pandey: " + s));
+    }
+
+    private static void futureObservable(){
+        Future<String> futureValue = null;  // initialize this with any future observable
+        Observable.fromFuture(futureValue)
+                .map(String::length)
+                .subscribe(System.out::println);
+    }
+
+    private static void emptyObservable(){
+        System.out.println("Empty observable calls below");
+        Observable<String> empty = Observable.empty();
+        empty.subscribe(System.out::println,
+                Throwable::printStackTrace,
+                () -> System.out.println("Done!"));
+    }
+
+    private static void neverObservable(){
+        System.out.println("Never observable calls below : it will never calls onComplete()");
+        Observable<String> empty = Observable.never();
+        empty.subscribe(System.out::println,
+                Throwable::printStackTrace,
+                () -> System.out.println("Done!"));
+        Utility.sleep(5000);
+    }
+
+    private static void errorObservable(){
+        System.out.println("This error observable will immediately call onError with specified exception");
+        Observable.error(new Exception("Crash and burn!"))
+                .subscribe(i -> System.out.println("RECEIVED: " + i),
+                        Throwable::printStackTrace,
+                        () -> System.out.println("Done!"));
     }
 
 
