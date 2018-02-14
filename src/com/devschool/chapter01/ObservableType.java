@@ -17,7 +17,8 @@ public class ObservableType {
 //        connectableWith2Subscriber();
         emptyObservable();
         neverObservable();
-        errorObservable();
+//        errorObservable();
+        deferObservable();
 
 
     }
@@ -99,11 +100,25 @@ public class ObservableType {
     }
 
     private static void errorObservable(){
-        System.out.println("This error observable will immediately call onError with specified exception");
+        System.out.println("This error observable will immediately call onError() with specified exception");
         Observable.error(new Exception("Crash and burn!"))
                 .subscribe(i -> System.out.println("RECEIVED: " + i),
                         Throwable::printStackTrace,
                         () -> System.out.println("Done!"));
+    }
+
+    private static void deferObservable(){
+        System.out.println(" Defer Observable : it creates separate state for each observer");
+        int start = 1;
+        int count = 5;
+
+        Observable<Integer> source = Observable.defer(() -> Observable.range(start,count));
+        Observable<Integer> source2 = Observable.range(start,count);
+        source.subscribe(i -> System.out.println("Observer 1: " + i));
+//modify count
+//        count = 10; //todo check this error
+        source.subscribe(i -> System.out.println("Observer 2: " + i));
+
     }
 
 
