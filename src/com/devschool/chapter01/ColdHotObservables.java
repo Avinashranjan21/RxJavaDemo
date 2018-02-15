@@ -28,7 +28,7 @@ public class ColdHotObservables {
     }
 //        Hot observable .........
 
-    public static void connectableObservable() {
+    private static void connectableObservable() {
         ConnectableObservable<String> source = Observable.just("Alpha", "Beta", "Gamma", "Delta", "Epsilon").publish();
 //Set up observer 1
         source.subscribe(s -> System.out.println("Observer 1: " + s));
