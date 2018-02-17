@@ -3,9 +3,12 @@ package com.devschool.Concurrency;
 
 import com.devschool.Utility;
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -37,6 +40,7 @@ public class ConcurrencyMain {
         Utility.sleep(20000);
 
         blockingSubscribe();
+        ExecutorServiceMethod();
     }
 
     private static <T> T intenseCalculation(T value) {
@@ -53,6 +57,19 @@ public class ConcurrencyMain {
                 .blockingSubscribe(System.out::println,
                         Throwable::printStackTrace,
                         () -> System.out.println("Done!"));
+    }
+
+    private static void ExecutorServiceMethod(){
+        System.out.println("ExecutorService method is being called");
+
+        int numberOfThreads = 20;
+        ExecutorService executor =
+                Executors.newFixedThreadPool(numberOfThreads);
+        Scheduler scheduler = Schedulers.from(executor);
+        Observable.just("Avinash", "Pandey", "Ranjan", "Bokaro", "Steel", "City")
+                .subscribeOn(scheduler)
+                .doFinally(executor::shutdown)
+                .subscribe(System.out::println);
     }
 
 }
